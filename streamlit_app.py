@@ -282,38 +282,38 @@ elif page == "Prediction":
     st.pyplot(fig)
 
     ### vi) Feature coefficients bar chart
-    st.markdown("### Feature Coefficients")
-    coef_df = pd.DataFrame({
-        "Feature": features_selection,
-        "Coefficient": model.coef_
-    }).sort_values("Coefficient", key=abs, ascending=False)
+    # st.markdown("### Feature Coefficients")
+    # coef_df = pd.DataFrame({
+    #     "Feature": features_selection,
+    #     "Coefficient": model.coef_
+    # }).sort_values("Coefficient", key=abs, ascending=False)
 
-    fig2, ax2 = plt.subplots(figsize=(8, max(3, len(features_selection) * 0.4)))
-    colors = ["steelblue" if c >= 0 else "tomato" for c in coef_df["Coefficient"]]
-    ax2.barh(coef_df["Feature"], coef_df["Coefficient"], color=colors)
-    ax2.axvline(0, color="black", linewidth=0.8)
-    ax2.set_title("Linear Regression Coefficients")
-    ax2.set_xlabel("Coefficient Value")
-    st.pyplot(fig2)
+    # fig2, ax2 = plt.subplots(figsize=(8, max(3, len(features_selection) * 0.4)))
+    # colors = ["steelblue" if c >= 0 else "tomato" for c in coef_df["Coefficient"]]
+    # ax2.barh(coef_df["Feature"], coef_df["Coefficient"], color=colors)
+    # ax2.axvline(0, color="black", linewidth=0.8)
+    # ax2.set_title("Linear Regression Coefficients")
+    # ax2.set_xlabel("Coefficient Value")
+    # st.pyplot(fig2)
 
     ### vii) Predict for a new customer
-    st.markdown("### Predict for a New Customer")
-    with st.form("predict_form"):
-        input_vals = {}
-        form_cols = st.columns(3)
-        for i, feat in enumerate(features_selection):
-            col_min  = float(df2[feat].min())
-            col_max  = float(df2[feat].max())
-            col_mean = float(df2[feat].mean())
-            input_vals[feat] = form_cols[i % 3].number_input(
-                feat, min_value=col_min, max_value=col_max, value=round(col_mean, 2)
-            )
-        submitted = st.form_submit_button("Predict")
+    # st.markdown("### Predict for a New Customer")
+    # with st.form("predict_form"):
+    #     input_vals = {}
+    #     form_cols = st.columns(3)
+    #     for i, feat in enumerate(features_selection):
+    #         col_min  = float(df2[feat].min())
+    #         col_max  = float(df2[feat].max())
+    #         col_mean = float(df2[feat].mean())
+    #         input_vals[feat] = form_cols[i % 3].number_input(
+    #             feat, min_value=col_min, max_value=col_max, value=round(col_mean, 2)
+    #         )
+    #     submitted = st.form_submit_button("Predict")
 
-    if submitted:
-        input_df = pd.DataFrame([input_vals])
-        result = model.predict(input_df)[0]
-        st.info(f"Predicted **{target_selection}**: **{result:,.2f}**")
+    # if submitted:
+    #     input_df = pd.DataFrame([input_vals])
+    #     result = model.predict(input_df)[0]
+    #     st.info(f"Predicted **{target_selection}**: **{result:,.2f}**")
 
 elif page == "Insights and Recommendations 🧠":
     st.subheader("05 Insights and Recommendations")
