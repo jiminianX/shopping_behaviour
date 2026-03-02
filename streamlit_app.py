@@ -17,44 +17,41 @@ from sklearn import metrics
 # from streamlit_pandas_profiling import st_profile_report
 
 st.set_page_config(
-    page_title="Healthcare Clinic Revenue Dashboard 🏥",
+    page_title="Online vs In-Store Shopping Behaviour 🛍️",
     layout="centered",
-    page_icon="🏥",
+    page_icon="🛍️",
 )
 
 
 ## Step 01 - Setup
-st.sidebar.title("Healthcare Clinics 🏥")
+st.sidebar.title("Shopping Behaviour 🛍️")
 page = st.sidebar.selectbox("Select Page",["Business Case 📘","Visualization 📊", "Prediction", "Insights and Recommendations 🧠"])
 
 
 #st.video("video.mp4")
 
-st.image("hospital.jpg")
+st.image("shopping.avif")
 
 st.write("   ")
 st.write("   ")
 st.write("   ")
-df=pd.read_csv('online vs store shopping dataset')
-
-df = appointments.merge(patients, on="patient_id", how="left")
-df = df.merge(clinics, on="clinic_id", how="left")
+df=pd.read_csv('shopping.csv')
 
 df.head()  
 
 ## Step 02 - Load dataset
 if page == "Business Case 📘":
 
-    st.subheader("Healthcare Clinic Revenue Dashboard")
+    st.subheader("Online vs In-Store Shopping Behaviour Dashboard")
 
     st.markdown("""
     ## 🎯 Business Problem
 
-    Healthcare clinics lose revenue due to:
-    - Patient no-shows
-    - Underutilized appointment slots
-    - Inefficient scheduling
-    - Poor resource allocation
+    Online and in-store shopping behaviors vary significantly, leading to:
+
+    - Missed revenue opportunities
+    - Inefficient inventory management
+    - Suboptimal marketing strategies
 
     These inefficiencies lead to hidden financial losses.
     """)
@@ -62,9 +59,9 @@ if page == "Business Case 📘":
     st.markdown("""
     ## Our Solution
 
-    1. Identify revenue loss per clinic  
-    2. Predict no-show rates using Linear Regression  
-    3. Recommend optimized scheduling strategies  
+    1. Data Analysis: Identify key factors contributing to revenue leakage.
+    2. Visualization: Create interactive dashboards to monitor shopping behaviors.
+    3. Predictive Modeling: Forecast future shopping trends
     """)
 
     st.markdown("##### Data Preview")
@@ -75,12 +72,10 @@ if page == "Business Case 📘":
     st.markdown("##### Missing values")
     missing_values = df.isnull().sum()
     
-
     st.write(missing_values)
     
-
     st.markdown("##### Data Shape")
-    st.write("Patients:", df.shape)
+    st.write("Shopping Data:", df.shape)
     
 
     if missing_values.sum() == 0:
