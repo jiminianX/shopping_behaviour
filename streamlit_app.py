@@ -35,9 +35,7 @@ st.image("hospital.jpg")
 st.write("   ")
 st.write("   ")
 st.write("   ")
-patients = pd.read_csv("patients.csv")
-appointments = pd.read_csv("appointments.csv")
-clinics = pd.read_csv("clinics.csv")
+df=pd.read_csv('online vs store shopping dataset')
 
 df = appointments.merge(patients, on="patient_id", how="left")
 df = df.merge(clinics, on="clinic_id", how="left")
@@ -71,25 +69,21 @@ if page == "Business Case 📘":
 
     st.markdown("##### Data Preview")
     rows = st.slider("Select a number of rows to display",5,20,5)
-    st.dataframe(patients.head(rows))
-    st.dataframe(appointments.head(rows))
-    st.dataframe(clinics.head(rows))
+    st.dataframe(df.head(rows))
+
 
     st.markdown("##### Missing values")
-    missing_patients = patients.isnull().sum()
-    missing_appointments = appointments.isnull().sum()
-    missing_clinics = clinics.isnull().sum()
+    missing_values = df.isnull().sum()
+    
 
-    st.write(missing_patients)
-    st.write(missing_appointments)
-    st.write(missing_clinics)
+    st.write(missing_values)
+    
 
     st.markdown("##### Data Shape")
-    st.write("Patients:", patients.shape)
-    st.write("Appointments:", appointments.shape)
-    st.write("Clinics:", clinics.shape)
+    st.write("Patients:", df.shape)
+    
 
-    if missing_patients.sum() == 0 and missing_appointments.sum() == 0 and missing_clinics.sum() == 0:
+    if missing_values.sum() == 0:
         st.success("✅ No missing values found")
     else:
         st.warning("⚠️ you have missing values")
