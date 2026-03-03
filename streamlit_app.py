@@ -4,11 +4,15 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 import numpy as np
-
+from sklearn.metrics import roc_curve, precision_recall_curve
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, f1_score, roc_auc_score, classification_report
+from sklearn.metrics import roc_curve, precision_recall_curve
 
 st.set_page_config(
     page_title="Telco Customer Churn Analysis 📡",
@@ -198,18 +202,20 @@ elif page == "Visualization 📊":
     with tab3:
         st.subheader("Correlation Matrix")
         st.write("Interactive heatmap allows you to hover over cells to see the exact correlation coefficient.")
+        df_vis["Partner_"] = df_vis["Partner"].astype("category").cat.codes
+        df_vis["Churn_"] = df_vis["Churn"].astype("category").cat.codes
+        df_vis["Contract_"] = df_vis["Contract"].astype("category").cat.codes
+        df_vis["InternetService_"] = df_vis["InternetService"].astype("category").cat.codes
+        df_vis["Dependents_"] = df_vis["Dependents"].astype("category").cat.codes
+        df_vis["PaymentMethod_"] = df_vis["PaymentMethod"].astype("category").cat.codes
         numeric_cols = df_vis.select_dtypes(include=[np.number]).columns.tolist()
         corr = df_vis[numeric_cols].corr()
-        try:
-            import plotly.express as px
-            fig3 = px.imshow(corr, text_auto=True, color_continuous_scale='Blues', aspect='auto')
-            st.plotly_chart(fig3, use_container_width=True)
-        except ImportError:
-            st.warning('Plotly not installed; showing static heatmap instead.')
-            fig3, ax3 = plt.subplots(figsize=(10, 6))
-            sns.heatmap(corr, annot=True, cmap='Blues', fmt=".2f", ax=ax3)
-            ax3.set_title("Correlation Heatmap")
-            st.pyplot(fig3)
+        
+            
+        fig3, ax3 = plt.subplots(figsize=(10, 6))
+        sns.heatmap(corr, annot=True, cmap='Blues', fmt=".2f", ax=ax3)
+        ax3.set_title("Correlation Heatmap")
+        st.pyplot(fig3)
 
     with tab4:
         st.subheader("Churn by Internet Service")
@@ -268,6 +274,8 @@ elif page == "Visualization 📊":
                 axb.set_ylabel("Count")
                 st.pyplot(figb)
                 continue
+            elif col == 'tenure':
+                continue
             fig, ax = plt.subplots()
             sns.histplot(df_vis[col].dropna(), kde=False, ax=ax)
             ax.set_title(f"Distribution of {col}")
@@ -306,9 +314,7 @@ elif page == "Prediction 🤖":
     y = df2['Churn']
 
     # build preprocessing pipeline
-    from sklearn.pipeline import Pipeline
-    from sklearn.compose import ColumnTransformer
-    from sklearn.preprocessing import OneHotEncoder
+    
 
     preprocessor = ColumnTransformer(
         transformers=[
@@ -335,7 +341,7 @@ elif page == "Prediction 🤖":
     st.metric("AUC-ROC", f"{roc_auc_score(y_test, y_prob):.3f}")
 
     # ROC and PR curves
-    from sklearn.metrics import roc_curve, precision_recall_curve
+    
     fpr, tpr, _ = roc_curve(y_test, y_prob)
     precision, recall, _ = precision_recall_curve(y_test, y_prob)
 
