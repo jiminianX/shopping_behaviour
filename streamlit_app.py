@@ -313,20 +313,37 @@ elif page == "Visualization 📊":
                 if not outliers.empty:
                     st.write(f"{len(outliers)} extreme values found in {col} (beyond 3σ)")
         # for non-numeric columns, show a pie chart of value counts
-        for col in nonnum:
-            counts = df_vis[col].value_counts()
-            colors = [colors_map[str(val)] for val in counts.index]
-            figp, axp = plt.subplots()
-            wedges, texts, autotexts = axp.pie(counts.values,
-                    labels=counts.index,
-                    autopct=autopct_format(counts.values),
-                    colors=colors,
-                    textprops={'color': 'white', 'weight': 'bold'})
-            for text in texts:
-                text.set_color('black')
-            axp.set_title(f"{col} distribution")
-            st.pyplot(figp)
-        
+        firstset,secondset=st.columns(2)
+        with firstset:
+
+            for col in nonnum[:len(nonnum)//2]:
+                counts = df_vis[col].value_counts()
+                colors = [colors_map[str(val)] for val in counts.index]
+                figp, axp = plt.subplots(figsize=(8,8))
+                wedges, texts, autotexts = axp.pie(counts.values,
+                        labels=counts.index,
+                        autopct=autopct_format(counts.values),
+                        colors=colors,
+                        textprops={'color': 'white', 'weight': 'bold'})
+                for text in texts:
+                    text.set_color('black')
+                axp.set_title(f"{col} distribution")
+                st.pyplot(figp,clear_figure=True,width='stretch')
+        with secondset:
+            for col in nonnum[len(nonnum)//2:]:
+                counts = df_vis[col].value_counts()
+                colors = [colors_map[str(val)] for val in counts.index]
+                figp, axp = plt.subplots(figsize=(8,8))
+                wedges, texts, autotexts = axp.pie(counts.values,
+                        labels=counts.index,
+                        autopct=autopct_format(counts.values),
+                        colors=colors,
+                        textprops={'color': 'white', 'weight': 'bold'})
+                for text in texts:
+                    text.set_color('black')
+                axp.set_title(f"{col} distribution")
+                axp.axis('equal')
+                st.pyplot(figp,clear_figure=True,width='stretch')
         # Add senior citizen distribution note at bottom
         st.markdown("---")
         st.markdown("#### Senior Citizen Distribution")
