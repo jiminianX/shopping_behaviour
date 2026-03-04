@@ -480,7 +480,9 @@ elif page == "Prediction 🤖":
     # Classification Report
     st.markdown("### Classification Report")
     report = classification_report(y_test, y_pred, target_names=['retained (stayed)', 'churned (left)'], output_dict=True)
-    st.dataframe(pd.DataFrame(report).transpose())
+    report_df = pd.DataFrame(report).transpose()
+    report_df = report_df.drop(columns=['f1-score'])
+    st.dataframe(report_df)
 elif page == "Insights and Recommendations 🧠":
     st.subheader("Insights and Recommendations")
 
